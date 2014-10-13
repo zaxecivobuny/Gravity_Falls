@@ -24,11 +24,23 @@
 #code18i = "9-20- -23-15-18-11-19- -6-15-18- -16-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-9-7-19-!"
 #code20 = "5-19-23-6-21-16 18-9-6 4-16-19 22-12-15-10-20-19-25-19"
 #code20i = "5-19-23-6-21-16- -18-9-6- -4-16-19- -22-12-15-10-20-19-25-19"
-#codestansmind = "PBVWHUB VKDFN"
+#codes02e01 = "SMOFZQA JDFV"
+#codes02e02 = "OOIY DMEV VN IBWRKAMW BRUWLL"
+codenotebook1 = "15-11-8-6-9-8-19-6- -3-5-19- -9-18- -11-23-21-16-15-10-19-6-25- -21-9-3-12-20- -12-19-23-20- -4-9- -3-4-4-19-6- -21-23-4-23-5-4-6-9-8-16-19"
+codestansmind = "PBVWHUB VKDFN"
+codestansafe = "13-44"
+codebillcipher = "VWDQ LV QRW ZKDW KH VHHPV"
+
 
 #code_mary = "NGKNGL YGLR CYQW"
-code = "5-19-23-6-21-16- -18-9-6- -4-16-19- -22-12-15-10-20-19-25-19"
+code = codenotebook1
 offset = 0
+
+def letter_to_number(code):
+	output = []
+	for char in code:
+		output.append(ord(char) - 64)
+	return output
 
 def forward_decoder (code,offset):
 	output = ""
@@ -90,14 +102,17 @@ def number_decode(code):
 	code_chop = code.split('-')
 	output = ""
 
-	print code_chop
+	#print code_chop
 	for i in code_chop:
 		if is_number(i):
-			output+= chr(int(i)+64)
+			m = int(i)%26
+			output+= chr(m+64)
 		else:
 			output+=i
 
 	return output
+
+codedict = {'A': 'A', 'C': 'C', 'B': 'B', 'E': 'E', 'D': 'D', 'G': 'G', 'F': 'F', 'I': 'I', 'H': 'H', 'K': 'K', 'J': 'J', 'M': 'M', 'L': 'L', 'O': 'O', 'N': 'N', 'Q': 'Q', 'P': 'P', 'S': 'S', 'R': 'R', 'U': 'U', 'T': 'T', 'W': 'W', 'V': 'V', 'Y': 'Y', 'X': 'X', 'Z': 'Z'}
 
 #code = number_decode(code)
 #print code
@@ -106,8 +121,23 @@ def number_decode(code):
 
 #print reverse_decoder(code)
 
-print forward_decoder(reverse_decoder(number_decode(code)), 23)
+#print forward_decoder(reverse_decoder(code), 23)
+#print forward_decoder(codebillcipher , 23)
+#print number_decode("18-5-22-5-18-19-5- -20-8-5- -3-9-16-8-5-18-19")
 
+print forward_decoder(reverse_decoder(number_decode(code)),23)
 
 # ord('A')
 # ord('Z')
+code1 = letter_to_number(code)
+answer1 = letter_to_number("WELCOME BACK")
+
+for i in range(26):
+	j = chr(65+i)
+	codedict[j] = j
+
+
+print code
+print "WELCOME BACK"
+
+print codedict
