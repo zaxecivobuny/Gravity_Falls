@@ -36,60 +36,74 @@ codebillcipher = "VWDQ LV QRW ZKDW KH VHHPV"
 code = codenotebook1
 offset = 0
 
+def mixed_offset_decoder(code,key):
+    output = ""
+    for index, char in enumerate(code):
+        output += forward_decoder(char, key[index%len(key)])
+    return output
+
+def reorder_by_key(code, key):
+    output = range(10)
+    for index, char in enumerate(code):
+        print 
+        output[key[index]-1] = char
+    return "".join(output)
+
+
 def letter_to_number(code):
-	output = []
-	for char in code:
-		output.append(ord(char) - 64)
-	return output
+    output = []
+    for char in code:
+        output.append(ord(char) - 64)
+    return output
 
 def forward_decoder (code,offset):
-	output = ""
-	decoder = {}
+    output = ""
+    decoder = {}
 
-	for i in range(65,91):
-		if (i + offset <= 90):
-			decoder[chr(i)] = chr(i+offset)
-		else:
-			decoder[chr(i)] = chr(i+offset - 26)
+    for i in range(65,91):
+        if (i + offset <= 90):
+            decoder[chr(i)] = chr(i+offset)
+        else:
+            decoder[chr(i)] = chr(i+offset - 26)
 
-	#print decoder['A']
-	#print decoder
+    #print decoder['A']
+    #print decoder
 
-	for char in code:
-		if ord(char) < 65 or ord(char) > 90:
-			output += char
-		else:
-			output += decoder[char]
+    for char in code:
+        if ord(char) < 65 or ord(char) > 90:
+            output += char
+        else:
+            output += decoder[char]
 
-	return output
+    return output
 
 def decodify(code, decoder):
-	output = ""
-	for char in code:
-		if ord(char) < 65 or ord(char) > 90:
-			output += char
-		elif char in decoder:
-			output += decoder[char]
-		else:
-			output += '-'	
-	return output
+    output = ""
+    for char in code:
+        if ord(char) < 65 or ord(char) > 90:
+            output += char
+        elif char in decoder:
+            output += decoder[char]
+        else:
+            output += '-'    
+    return output
 
 def reverse_decoder(code):
-	output = ""
-	decoder = {}
+    output = ""
+    decoder = {}
 
-	for i in range(65, 91):
-		decoder[chr(i)] = chr(90-(i-65))
+    for i in range(65, 91):
+        decoder[chr(i)] = chr(90-(i-65))
 
-	
+    
 
-	for char in code:
-		if ord(char) < 65 or ord(char) > 90:
-			output += char
-		else:
-			output += decoder[char]
+    for char in code:
+        if ord(char) < 65 or ord(char) > 90:
+            output += char
+        else:
+            output += decoder[char]
 
-	return output
+    return output
 
 def is_number(s):
     try:
@@ -99,45 +113,71 @@ def is_number(s):
         return False
 
 def number_decode(code):
-	code_chop = code.split('-')
-	output = ""
+    code_chop = code.split('-')
+    output = ""
 
-	#print code_chop
-	for i in code_chop:
-		if is_number(i):
-			m = int(i)%26
-			output+= chr(m+64)
-		else:
-			output+=i
+    #print code_chop
+    for i in code_chop:
+        if is_number(i):
+            m = int(i)%26
+            output+= chr(m+64)
+        else:
+            output+=i
 
-	return output
+    return output
 
 codedict = {'A': 'A', 'C': 'C', 'B': 'B', 'E': 'E', 'D': 'D', 'G': 'G', 'F': 'F', 'I': 'I', 'H': 'H', 'K': 'K', 'J': 'J', 'M': 'M', 'L': 'L', 'O': 'O', 'N': 'N', 'Q': 'Q', 'P': 'P', 'S': 'S', 'R': 'R', 'U': 'U', 'T': 'T', 'W': 'W', 'V': 'V', 'Y': 'Y', 'X': 'X', 'Z': 'Z'}
 
 #code = number_decode(code)
 #print code
 #for i in range(0,26):
-#	print forward_decoder(code,offset +i)
+#    print forward_decoder(code,offset +i)
 
 #print reverse_decoder(code)
 
 #print forward_decoder(reverse_decoder(code), 23)
 #print forward_decoder(codebillcipher , 23)
 #print number_decode("18-5-22-5-18-19-5- -20-8-5- -3-9-16-8-5-18-19")
+def main():
 
-print forward_decoder(reverse_decoder(number_decode(code)),23)
+    # jj_code = "AEIROOFL.K"
+    jj_code =  ["AFNHEUTVOD",
+                "ESUHNLIIOB",
+                "IAILPTLARC",
+                "RUIETNGERN",
+                "OANHEOEMTC",
+                "OROCETYVSR",
+                "FASOEHIDTT",
+                "LTTLNC.IAA",
+                ".UEJOTAMNB",
+                "K--N------"]
+    jj_key = [2,5,8,1,4,7,10,3,6,9]
+    print jj_key
+    print len(jj_key)
+    # print mixed_offset_decoder(justin_jokela, jj_key)
+    print reorder_by_key(jj_code[0], jj_key)
 
-# ord('A')
-# ord('Z')
-code1 = letter_to_number(code)
-answer1 = letter_to_number("WELCOME BACK")
+    final_output = ""
+    for line in jj_code:
+        final_output+=reorder_by_key(line, jj_key)
+        final_output+="\n"
+    print final_output
+    # print forward_decoder(reverse_decoder(number_decode(code)),23)
 
-for i in range(26):
-	j = chr(65+i)
-	codedict[j] = j
+    # # ord('A')
+    # # ord('Z')
+    # code1 = letter_to_number(code)
+    # answer1 = letter_to_number("WELCOME BACK")
+
+    # for i in range(26):
+    #     j = chr(65+i)
+    #     codedict[j] = j
 
 
-print code
-print "WELCOME BACK"
+    # print code
+    # print "WELCOME BACK"
 
-print codedict
+    # print codedict
+
+if __name__ == "__main__":
+    main()
